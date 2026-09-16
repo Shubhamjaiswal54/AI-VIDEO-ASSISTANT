@@ -14,6 +14,23 @@ The project consists of a FastAPI backend and a React frontend (`frontend/`).
 
 ## Architecture
 
+```mermaid
+flowchart LR
+    A["YouTube URL or local file"] --> B["audio_preprocessing\ndownload · convert · chunk"]
+    B --> C["transcriber\nWhisper (local)"]
+    C --> D["extractor\ntitle · summary · action items\ndecisions · open questions"]
+    C --> E["vector_store + rag_engine\nChroma index"]
+    D --> F["server.py\nFastAPI job API"]
+    E --> G["/api/jobs/{id}/chat"]
+    F --> H["React frontend"]
+    G --> H
+
+    KEY["GROQ_API_KEY"]:::config -.-> D
+    KEY -.-> E
+
+    classDef config fill:#fff3cd,stroke:#b45309,color:#7c2d12,stroke-dasharray: 3 3;
+```
+
 | Stage | Module | Responsibility |
 |---|---|---|
 | Ingestion | `util/audio_preprocessing.py` | Downloads (yt-dlp) or accepts a local file, converts to mono 16kHz WAV, chunks it |
