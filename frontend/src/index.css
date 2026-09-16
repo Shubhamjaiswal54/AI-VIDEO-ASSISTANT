@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-ink: #0b0c10;
+  --color-panel: #12131b;
+  --color-panel-soft: #181a24;
+  --color-border: #262838;
+  --color-signal: #c6ff5e;
+  --color-signal-dim: #8fd140;
+  --color-amber: #ffb86b;
+  --color-text: #eef0f6;
+  --color-text-dim: #9497ac;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: #0b0c10;
+  }
+
+  * {
+    scrollbar-color: var(--color-border) transparent;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+
+  .bg-noise {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0);
+    background-size: 4px 4px;
+  }
+
+  .glow-signal {
+    box-shadow: 0 0 0 1px rgba(198, 255, 94, 0.25), 0 8px 40px -12px rgba(198, 255, 94, 0.35);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 24px rgba(198, 255, 94, 0.35);
+  }
+}
+
+@keyframes rise {
+  0%,
+  100% {
+    transform: scaleY(0.25);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.bar {
+  animation: rise 1.1s ease-in-out infinite;
+  transform-origin: bottom;
+}

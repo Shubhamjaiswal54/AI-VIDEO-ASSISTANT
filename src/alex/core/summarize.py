@@ -5,11 +5,14 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.runnables import RunnableLambda
+from langchain_mistralai import ChatMistralAI
+from langchain_groq import ChatGroq
+    
 load_dotenv()
 
 
-def get_llm():
-    llm = ChatGoogleGenerativeAI(model="gemini-3.5-flash")
+def get_llm(): 
+    llm = ChatGroq(model="openai/gpt-oss-20b")
     return llm
 
 

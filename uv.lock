@@ -142,19 +142,24 @@ source = { editable = "." }
 dependencies = [
     { name = "chromadb" },
     { name = "deep-translator" },
+    { name = "fastapi" },
     { name = "ffmpeg-python" },
     { name = "fpdf2" },
     { name = "huggingface-hub" },
     { name = "langchain" },
+    { name = "langchain-chroma" },
     { name = "langchain-community" },
     { name = "langchain-core" },
+    { name = "langchain-groq" },
     { name = "langchain-huggingface" },
     { name = "langchain-mistralai" },
+    { name = "langchain-ollama" },
     { name = "mistralai" },
     { name = "numpy" },
     { name = "openai-whisper" },
     { name = "pydub" },
     { name = "python-dotenv" },
+    { name = "python-multipart" },
     { name = "reportlab" },
     { name = "requests" },
     { name = "sentence-transformers" },
@@ -164,6 +169,7 @@ dependencies = [
     { name = "torch" },
     { name = "torchaudio" },
     { name = "tqdm" },
+    { name = "uvicorn", extra = ["standard"] },
     { name = "watchdog" },
     { name = "yt-dlp" },
 ]
@@ -172,19 +178,24 @@ dependencies = [
 requires-dist = [
     { name = "chromadb", specifier = ">=0.5.0" },
     { name = "deep-translator", specifier = ">=1.11.4" },
+    { name = "fastapi", specifier = ">=0.141.1" },
     { name = "ffmpeg-python", specifier = ">=0.2.0" },
     { name = "fpdf2", specifier = ">=2.7.9" },
     { name = "huggingface-hub", specifier = ">=0.23.0" },
     { name = "langchain", specifier = ">=0.2.0" },
+    { name = "langchain-chroma", specifier = ">=0.1.2" },
     { name = "langchain-community", specifier = ">=0.2.0" },
     { name = "langchain-core", specifier = ">=0.2.0" },
+    { name = "langchain-groq", specifier = ">=1.1.3" },
     { name = "langchain-huggingface", specifier = ">=0.0.3" },
     { name = "langchain-mistralai", specifier = ">=0.1.0" },
+    { name = "langchain-ollama", specifier = ">=1.1.0" },
     { name = "mistralai", specifier = ">=0.4.0" },
     { name = "numpy", specifier = ">=1.26.0" },
     { name = "openai-whisper", specifier = ">=20231117" },
     { name = "pydub", specifier = ">=0.25.1" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
+    { name = "python-multipart", specifier = ">=0.0.32" },
     { name = "reportlab", specifier = ">=4.2.0" },
     { name = "requests", specifier = ">=2.32.0" },
     { name = "sentence-transformers", specifier = ">=3.0.0" },
@@ -194,6 +205,7 @@ requires-dist = [
     { name = "torch", specifier = ">=2.2.0" },
     { name = "torchaudio", specifier = ">=2.2.0" },
     { name = "tqdm", specifier = ">=4.66.0" },
+    { name = "uvicorn", extras = ["standard"], specifier = ">=0.52.4" },
     { name = "watchdog", specifier = ">=4.0.0" },
     { name = "yt-dlp", specifier = ">=2024.4.9" },
 ]
@@ -681,6 +693,22 @@ wheels = [
 ]
 
 [[package]]
+name = "fastapi"
+version = "0.141.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "annotated-doc" },
+    { name = "pydantic" },
+    { name = "starlette" },
+    { name = "typing-extensions" },
+    { name = "typing-inspection" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/8a/02/91e3416a8fdd715abb903a952a6bec7cdd8d14eed55d415fc8595524c319/fastapi-0.141.1.tar.gz", hash = "sha256:e8822fc40db1e1858054d7a949a888695bc9bdce70139178e33bd2871a453ca1", size = 425799, upload-time = "2026-07-29T17:18:05.568Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cb/03/10388a42375ee7e4ac9b94eb2c5c569c8b5795e377e701c9ac3ad63de890/fastapi-0.141.1-py3-none-any.whl", hash = "sha256:bfb91aa2d334c61cb35ba9a116fc123b3d3df31640b801cf57a7a78ec3f603b3", size = 131954, upload-time = "2026-07-29T17:18:04.364Z" },
+]
+
+[[package]]
 name = "ffmpeg-python"
 version = "0.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -952,6 +980,23 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/78/76/26a3782a051677668af9d92beaa47cd87ba9dd5072f762961144a03dd4c6/greenlet-3.5.5-cp315-cp315t-musllinux_1_2_x86_64.whl", hash = "sha256:19e4e026fe20691f333b8eb1a3bc9625eceba8c3f9d62ec5a6f8581afbc6b5a5", size = 1700925, upload-time = "2026-08-10T13:40:37.656Z" },
     { url = "https://files.pythonhosted.org/packages/28/d9/fe7baf4190c2ae71f267efb9de21b3172bb35bc0ed1ef53dd6027d658e33/greenlet-3.5.5-cp315-cp315t-win_amd64.whl", hash = "sha256:712aee154f648bde84634654bb38bb78c69ac640c37a45c9effed800735049d8", size = 331829, upload-time = "2026-08-10T13:26:48.851Z" },
     { url = "https://files.pythonhosted.org/packages/df/af/419a4e383bd600858a9b67e9b280a60fdc383ee3f2fe5b6c0c1ef04e74d1/greenlet-3.5.5-cp315-cp315t-win_arm64.whl", hash = "sha256:7f049911ee81a16a03c33d5450d8d5867d27f596ca5fb201b86f4524e874468b", size = 315093, upload-time = "2026-08-10T13:29:34.949Z" },
+]
+
+[[package]]
+name = "groq"
+version = "0.37.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+    { name = "distro" },
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "sniffio" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e9/78/18948a9056e1509c87e10ab8316a90ecce87035fbd53342dffdf97f4de00/groq-0.37.1.tar.gz", hash = "sha256:7353d6dfb60834fd7aacbb86af106e2dc2aeaff6d0edd65fb2fd0f16bd39314c", size = 145289, upload-time = "2025-12-04T18:08:07.118Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5f/d6/645a081750e43f858b7d09dce5d8e1e76cf11e7e4bdba81252e04f78963d/groq-0.37.1-py3-none-any.whl", hash = "sha256:b49f8c8898c55eaec9f71f1342f3fcacc9560d67a08ce5f35fbfb84e8dacd3da", size = 137494, upload-time = "2025-12-04T18:08:05.801Z" },
 ]
 
 [[package]]
@@ -1304,6 +1349,20 @@ wheels = [
 ]
 
 [[package]]
+name = "langchain-chroma"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "chromadb" },
+    { name = "langchain-core" },
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fa/0e/54896830b7331c90788cf96b2c37858977c199da9ecdaf85cf11eb6e6bc1/langchain_chroma-1.1.0.tar.gz", hash = "sha256:8069685e7848041e998d16c8a4964256b031fd20551bf59429173415bc2adc12", size = 220382, upload-time = "2025-12-12T16:23:01.399Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ae/35/2a6d1191acaad043647e28313b0ecd161d61f09d8be37d1996a90d752c13/langchain_chroma-1.1.0-py3-none-any.whl", hash = "sha256:ff65e4a2ccefb0fb9fde2ff38705022ace402f979d557f018f6e623f7288f0fc", size = 12981, upload-time = "2025-12-12T16:23:00.196Z" },
+]
+
+[[package]]
 name = "langchain-classic"
 version = "1.0.8"
 source = { registry = "https://pypi.org/simple" }
@@ -1365,6 +1424,19 @@ wheels = [
 ]
 
 [[package]]
+name = "langchain-groq"
+version = "1.1.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "groq" },
+    { name = "langchain-core" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6e/4d/64b5e57e9e43f009fcb1591f567f0095bcf38f0b705a2d63cec4c04e0d56/langchain_groq-1.1.3.tar.gz", hash = "sha256:890c099a55526bceafc3e696d123cb9d36464c6664a3ead34ae6e09e0d50caeb", size = 192228, upload-time = "2026-06-10T04:16:08.009Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a7/5d/2f862bf5623d5c8ca6ed8a8917a7b1410e6d3595ee0bac12aff508556f76/langchain_groq-1.1.3-py3-none-any.whl", hash = "sha256:a69bb8212b7a699f407c033bf41ca526db8de68f438d51a41740a72bf6dc09bf", size = 20779, upload-time = "2026-06-10T04:16:06.754Z" },
+]
+
+[[package]]
 name = "langchain-huggingface"
 version = "1.2.2"
 source = { registry = "https://pypi.org/simple" }
@@ -1392,6 +1464,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/70/92/d15c0640bf77908b765d76f46d7123d7b82b34b04dfad2838b68143f38f7/langchain_mistralai-1.1.6.tar.gz", hash = "sha256:c2694828adee61a497c571e25eaba1472095cd1d1f260a7fe15a6e60f9ece039", size = 157112, upload-time = "2026-07-05T21:30:23.059Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/5e/db/b727cd6e8083a48e4d0aba542f1454a50510d59b24476888af94b038be15/langchain_mistralai-1.1.6-py3-none-any.whl", hash = "sha256:0aa59b313b406ee934dc0431873b0e11849d8d746a6a7e281103c6848a9b1319", size = 22806, upload-time = "2026-07-05T21:30:21.84Z" },
+]
+
+[[package]]
+name = "langchain-ollama"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "langchain-core" },
+    { name = "ollama" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d4/9b/6641afe8a5bf807e454fd464eddfc7eb2f2df53cb0b29744381171f9c609/langchain_ollama-1.1.0.tar.gz", hash = "sha256:f776f56f6782ae4da7692579b94a6575906118318d1023b455d7207f9d059811", size = 133075, upload-time = "2026-04-07T02:48:00.873Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2c/b2/c2acb076590a98bee2816ed5f285e00df162a34238f9e276e175e14ebc35/langchain_ollama-1.1.0-py3-none-any.whl", hash = "sha256:43ac83a6eacb0f43855810739794dd55019e0d9b17bdcf3ecb3b1991ac3b59dd", size = 31413, upload-time = "2026-04-07T02:47:59.642Z" },
 ]
 
 [[package]]
@@ -2184,6 +2269,19 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/0b/5f/19930f824ffeb0ad4372da4812c50edbd1434f678c90c2733e1188edfc63/oauthlib-3.3.1.tar.gz", hash = "sha256:0f0f8aa759826a193cf66c12ea1af1637f87b9b4622d46e866952bb022e538c9", size = 185918, upload-time = "2025-06-19T22:48:08.269Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/be/9c/92789c596b8df838baa98fa71844d84283302f7604ed565dafe5a6b5041a/oauthlib-3.3.1-py3-none-any.whl", hash = "sha256:88119c938d2b8fb88561af5f6ee0eec8cc8d552b7bb1f712743136eb7523b7a1", size = 160065, upload-time = "2025-06-19T22:48:06.508Z" },
+]
+
+[[package]]
+name = "ollama"
+version = "0.6.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "httpx" },
+    { name = "pydantic" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fc/72/5f12423b6b39ca8430fbe56f77fcf4ef60f63067c7c4a2e30e200ed9ec16/ollama-0.6.2.tar.gz", hash = "sha256:936d55daa684f474364c098611c933626f8d6c7d67065c5b7ae0c477b508b07f", size = 53145, upload-time = "2026-04-29T21:21:15.018Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c4/ab/d6722beeb2d10f7a3b9ff49375708904fde18f82b5609a0bc4aeb5996a4d/ollama-0.6.2-py3-none-any.whl", hash = "sha256:3ad7daab28e5a973445c36a73882a3ef698c2ebb00e21e308652741577509f7d", size = 15115, upload-time = "2026-04-29T21:21:13.794Z" },
 ]
 
 [[package]]

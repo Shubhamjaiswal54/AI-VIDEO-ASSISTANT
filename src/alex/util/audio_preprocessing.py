@@ -2,11 +2,11 @@ import yt_dlp
 from pydub import AudioSegment
 import os
 
-url = 'https://youtu.be/XN3xNJvWXsc?si=-4TY6y1VCAyq8xdo' 
 folder = 'downloads'
+
 os.makedirs(folder, exist_ok=True)
 
-def download_audio_from_youtube(url):
+def download_audio_from_youtube(source):
     output_path = os.path.join(folder, '%(title)s.%(ext)s')
     
     """
@@ -25,7 +25,7 @@ def download_audio_from_youtube(url):
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
+        info = ydl.extract_info(source, download=True)
         filename = ydl.prepare_filename(info)
         base, _ = os.path.splitext(filename)
         return base + '.wav'
@@ -93,4 +93,4 @@ def process_input(source : str) -> list :
     return chunks
 
 
-print(process_input(url))
+# print(process_input(url))

@@ -15,32 +15,47 @@ Alex is an AI meeting assistant that turns a YouTube link or a local audio/video
 ## Architecture
 
 ```mermaid
-flowchart TD
-    A[Input: YouTube URL or local file] --> B[audio_preprocessing]
-    B -->|download_audio_from_youtube| B
-    B -->|convert_audio_to_wav mono 16kHz| C[WAV file]
-    C -->|chunk_audio| D[Audio chunks]
+flowchart LR
+    A["Input\nYouTube URL or local file"] --> B
 
-    D --> E[transcriber: Whisper]
-    E --> F[Transcript text]
+    subgraph B["audio_preprocessing"]
+        direction TB
+        B1["download_audio_from_youtube"] --> B2["convert_audio_to_wav\n(mono, 16kHz)"] --> B3["chunk_audio → N chunks"]
+    end
+    FF["requires ffmpeg on PATH"]:::config -.-> B
 
-    F --> G[summarize]
-    G -->|split_transcript| G1[Text chunks]
-    G1 -->|summarize each chunk| G2[Partial summaries]
-    G2 -->|combine| G3[Final meeting summary]
-    F -->|generate_title| H[Meeting title]
+    B -->|chunk .wav| C["transcriber\nWhisper (local, tiny)"]
+    C -.->|no audio leaves the machine| C
 
-    F --> I[extractor]
-    I --> I1[Action items]
-    I --> I2[Key decisions]
-    I --> I3[Open questions]
+    C -->|transcript text| D
+    C -->|transcript text| E
 
-    G3 --> J[Final output]
-    H --> J
-    I1 --> J
-    I2 --> J
-    I3 --> J
+    subgraph D["summarize"]
+        direction TB
+        D1["split_transcript"] --> D2["summarize each chunk"] --> D3["combine → final summary"]
+        D4["generate_title"]
+    end
+
+    subgraph E["extractor (main.py chains)"]
+        direction TB
+        E1["extract_action_items"]
+        E2["extract_key_decisions"]
+        E3["extract_questions"]
+    end
+
+    KEY["GOOGLE_API_KEY\nChatGoogleGenerativeAI (Gemini)"]:::config -.-> D
+    KEY -.-> E
+
+    D3 --> F["Meeting Report"]
+    D4 --> F
+    E1 --> F
+    E2 --> F
+    E3 --> F
+
+    classDef config fill:#fff3cd,stroke:#b45309,color:#7c2d12,stroke-dasharray: 3 3;
 ```
+
+Audio is downloaded and chunked, transcribed locally with Whisper, then the transcript fans out to summarization and extraction — both calling Gemini through `GOOGLE_API_KEY` — before the results merge into one report.
 
 The pipeline has four stages, each in its own module:
 
@@ -70,7 +85,9 @@ src/alex/
 - [FFmpeg](https://ffmpeg.org/) installed and available on PATH (required by `pydub` and `yt-dlp`)
 - A Google API key with access to the Gemini API
 
-## Installation
+## Usage
+
+### 1. Install
 
 This project uses [uv](https://docs.astral.sh/uv/) for dependency management.
 
@@ -84,52 +101,45 @@ Alternatively, with pip:
 pip install -r requirements.txt
 ```
 
-## Configuration
+### 2. Configure
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root with your Gemini key:
 
 ```
 GOOGLE_API_KEY=your_google_api_key_here
 ```
 
-## Usage
+### 3. Run
 
-Process a YouTube URL or a local audio file into chunks ready for transcription:
+Ingest, transcribe, summarize, and extract in sequence:
 
 ```python
 from alex.util.audio_preprocessing import process_input
-
-chunks = process_input("https://youtu.be/your-video-id")
-# or
-chunks = process_input("path/to/local/audio.mp3")
-```
-
-Transcribe a chunk:
-
-```python
 from alex.core.transcriber import transcribe_chunk_whisper
-
-text = transcribe_chunk_whisper("path/to/chunk.wav")
-```
-
-Summarize a transcript and generate a title:
-
-```python
 from alex.core.summarize import summarize, generate_title
-
-summary = summarize(transcript_text)
-title = generate_title(transcript_text)
-```
-
-Extract action items, decisions, and open questions:
-
-```python
 from alex.main import extract_action_items, extract_key_decisions, extract_questions
 
-action_items = extract_action_items(transcript_text)
-decisions = extract_key_decisions(transcript_text)
-questions = extract_questions(transcript_text)
+# 1. Download/ingest and chunk the audio
+chunks = process_input("https://youtu.be/your-video-id")  # or a local file path
+
+# 2. Transcribe each chunk locally with Whisper
+transcript = " ".join(transcribe_chunk_whisper(chunk) for chunk in chunks)
+
+# 3. Summarize and title the meeting
+summary = summarize(transcript)
+title = generate_title(transcript)
+
+# 4. Extract structured output
+action_items = extract_action_items(transcript)
+decisions = extract_key_decisions(transcript)
+questions = extract_questions(transcript)
 ```
+
+## Environment configuration
+
+| Variable | Used by | Purpose |
+|---|---|---|
+| `GOOGLE_API_KEY` | `summarize`, `main` (extractor) | Authenticates `ChatGoogleGenerativeAI` calls to the Gemini API for summarization, title generation, and action item / decision / question extraction. |
 
 ## Tech stack
 

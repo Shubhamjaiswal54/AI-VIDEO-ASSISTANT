@@ -5,7 +5,15 @@ build/
 dist/
 wheels/
 *.egg-info
+src/downloads
+src/vector_db
+src/alex/downloads
+src/alex/vector_db
 
 # Virtual environments
 .venv
 .env
+
+# Frontend
+frontend/node_modules
+frontend/dist
