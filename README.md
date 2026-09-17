@@ -1,8 +1,14 @@
+
+
+https://github.com/user-attachments/assets/eda1c88c-c21b-49a1-a8c0-a0de815dfeb9
+
 # Alex
 
 Alex turns a YouTube link or a local audio/video file into a structured, searchable brief. It transcribes the audio locally with Whisper, extracts a title, summary, action items, key decisions, and open questions with an LLM, and indexes the transcript so you can chat with the content afterwards.
 
 The project consists of a FastAPI backend and a React frontend (`frontend/`).
+
+
 
 ## Features
 
